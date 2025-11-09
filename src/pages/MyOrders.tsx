@@ -1,7 +1,7 @@
 // frontend/src/pages/MyOrders.tsx
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import { axiosInstanse } from '../config/Axios.Instanse';
 
 type Order = {
   _id: string;
@@ -20,7 +20,7 @@ export default function MyOrders() {
     if (!user?.id) return;
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`/api/orders/${user.id}`);
+        const res = await axiosInstanse.get(`/api/orders/${user.id}`);
         setOrders(res.data);
       } catch (err) {
         console.error(err);

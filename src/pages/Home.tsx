@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
-import axios from 'axios';
+import { axiosInstanse } from '../config/Axios.Instanse';
 
 type Order = {
   _id: string;
@@ -26,7 +26,7 @@ export default function Home() {
       // Fetch latest order
       const fetchOrder = async () => {
         try {
-          const res = await axios.get(`/api/orders/${user.id}`);
+          const res = await axiosInstanse.get(`/api/orders/${user.id}`);
           if (res.data.length > 0) {
             setRecentOrder(res.data[0]);
           }

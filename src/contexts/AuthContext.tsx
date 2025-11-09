@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { axiosInstanse } from '../config/Axios.Instanse';
 
 type AuthContextType = {
   token: string | null;
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const fetchUser = async () => {
       if (token) {
         try {
-          const res = await axios.get('/api/auth/me', {
+          const res = await axiosInstanse.get('/api/auth/me', {
             headers: { Authorization: `Bearer ${token}` }
           });
           setUser(res.data.user);
@@ -35,14 +35,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [token]);
 
   const login = async (email: string, password: string) => {
-    const res = await axios.post('/api/auth/login', { email, password });
+    const res = await axiosInstanse.post('/api/auth/login', { email, password });
     localStorage.setItem('token', res.data.token);
     setToken(res.data.token);
     setUser(res.data.user);
   };
 
   const signup = async (name: string, email: string, password: string) => {
-    const res = await axios.post('/api/auth/signup', { name, email, password });
+    const res = await axiosInstanse.post('/api/auth/signup', { name, email, password });
     localStorage.setItem('token', res.data.token);
     setToken(res.data.token);
     setUser(res.data.user);

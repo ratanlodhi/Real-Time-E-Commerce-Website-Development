@@ -1,9 +1,9 @@
 // frontend/src/pages/Checkout.tsx
 import { useState } from 'react';
-import axios from 'axios';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstanse } from '../config/Axios.Instanse';
 
 declare global {
   interface Window {
@@ -22,7 +22,7 @@ export default function Checkout() {
     setLoading(true);
 
     try {
-      const res = await axios.post('/api/payment/create-order', {
+      const res = await axiosInstanse.post('/api/payment/create-order', {
         amount: total,
         userId: user.id,
         products: cart.map((item) => ({ productId: item.productId })),
@@ -39,7 +39,7 @@ export default function Checkout() {
         order_id: res.data.orderId,
         handler: async function (response: any) {
           try {
-            await axios.post('/api/payment/verify', {
+            await axiosInstanse.post('/api/payment/verify', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,

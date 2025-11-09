@@ -1,8 +1,8 @@
 // frontend/src/pages/Products.tsx
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { axiosInstanse } from '../config/Axios.Instanse';
 
 type Product = {
   _id: string;
@@ -20,7 +20,7 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('/api/products');
+        const res = await axiosInstanse.get('/api/products');
         setProducts(res.data);
       } catch (err) {
         console.error(err);
