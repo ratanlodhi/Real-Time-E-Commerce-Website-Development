@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+# E-Commerce Website Submission
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Submission Details
+Submit the assessment by 10th November 2025, 9:00 AM. Please share the live website link along with a brief document outlining the tools used, architecture, and data flow.
 
-Currently, two official plugins are available:
+## Live Website Link
+[https://real-time-e-commerce-website-develo.vercel.app/](https://real-time-e-commerce-website-develo.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tools Used
+### Frontend
+- **React**: JavaScript library for building user interfaces.
+- **TypeScript**: Typed superset of JavaScript for better code quality and maintainability.
+- **Vite**: Fast build tool and development server for modern web projects.
+- **TailwindCSS**: Utility-first CSS framework for rapid UI development.
+- **Axios**: HTTP client for making API requests to the backend.
+- **React Router DOM**: Library for routing in React applications.
 
-## React Compiler
+### Backend
+- **Node.js**: JavaScript runtime for server-side development.
+- **Express**: Web framework for Node.js to handle HTTP requests and routing.
+- **TypeScript**: For type-safe backend development.
+- **MongoDB**: NoSQL database for storing user, product, and order data.
+- **Mongoose**: ODM (Object Data Modeling) library for MongoDB and Node.js.
+- **JWT (JSON Web Tokens)**: For user authentication and session management.
+- **Bcrypt**: For hashing user passwords securely.
+- **Razorpay**: Payment gateway integration for handling transactions.
+- **Nodemailer**: For sending email notifications (e.g., order confirmations).
+- **CORS**: Middleware for enabling cross-origin resource sharing between frontend and backend.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Development Tools
+- **Nodemon**: For automatic server restarts during development.
+- **ESLint**: For code linting and maintaining code quality.
+- **Vite Plugin React**: For React integration with Vite.
 
-## Expanding the ESLint configuration
+## Architecture
+The application follows a full-stack architecture with a clear separation between the frontend and backend:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend (Client-Side)
+- Built with React and TypeScript, providing a dynamic and responsive user interface.
+- Uses React Router for client-side routing to navigate between pages (e.g., Home, Products, Cart, Checkout).
+- Context API is used for state management:
+  - **AuthContext**: Manages user authentication state, login, signup, and logout.
+  - **CartContext**: Handles cart operations like adding/removing items and calculating totals.
+- Axios is configured with a base URL and credentials for secure API communication.
+- Pages include:
+  - Home: Landing page.
+  - Signup/Login: User authentication.
+  - Products: Display and browse products.
+  - Cart: View and manage cart items.
+  - Checkout: Process payments.
+  - MyOrders: View order history.
+- Protected routes ensure authenticated access to certain pages.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Backend (Server-Side)
+- Built with Node.js and Express, providing RESTful APIs.
+- TypeScript ensures type safety.
+- Routes are organized into modules:
+  - **Auth Routes**: Handle user registration, login, and profile retrieval.
+  - **Product Routes**: Fetch product listings.
+  - **Payment Routes**: Create and verify Razorpay orders.
+  - **Order Routes**: Retrieve user orders.
+- Middleware includes:
+  - **Authentication Middleware**: Verifies JWT tokens for protected endpoints.
+  - **CORS**: Allows requests from the frontend domain.
+- Models (using Mongoose):
+  - **User**: Stores user details (name, email, hashed password).
+  - **Product**: Stores product information (name, description, price, image).
+  - **Order**: Tracks orders with user ID, products, amount, payment status, etc.
+- Utilities:
+  - **Email Service**: Sends order confirmation emails via Nodemailer.
+- Database: MongoDB for persistent data storage.
+- Payment Integration: Razorpay for secure payment processing.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Deployment
+- Frontend deployed on Vercel.
+- Backend likely deployed on a platform like Vercel or Heroku (based on CORS configuration).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Data Flow
+1. **User Registration/Login**:
+   - User submits form on frontend (Signup/Login page).
+   - Frontend sends POST request to `/api/auth/signup` or `/api/auth/login` via Axios.
+   - Backend validates input, hashes password (if signup), generates JWT token.
+   - Token and user data returned to frontend, stored in localStorage, and AuthContext updated.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Browsing Products**:
+   - On Products page load, frontend fetches products via GET `/api/products`.
+   - Backend queries MongoDB for products and returns JSON array.
+   - Products displayed in UI; user can add to cart.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. **Cart Management**:
+   - Cart state managed locally in CartContext (persisted in localStorage).
+   - User adds/removes items; total calculated dynamically.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. **Checkout and Payment**:
+   - User proceeds to Checkout; cart data sent to backend via POST `/api/payment/create-order`.
+   - Backend creates Razorpay order, saves pending order in MongoDB.
+   - Frontend redirects to Razorpay payment gateway.
+   - After payment, Razorpay callback triggers POST `/api/payment/verify-payment`.
+   - Backend verifies payment signature, updates order status to 'completed', sends confirmation email.
+
+5. **Order History**:
+   - On MyOrders page, frontend fetches user orders via GET `/api/orders` (authenticated).
+   - Backend queries orders by user ID, populates product details, returns data.
+   - Orders displayed with product info and status.
+
+6. **Email Notifications**:
+   - Post-payment verification, backend uses Nodemailer to send HTML email with order details to user.
+
+Overall, data flows from frontend UI actions to backend APIs, interacting with MongoDB for persistence and external services (Razorpay, Gmail) for payments and emails. Authentication ensures secure access to user-specific data.
