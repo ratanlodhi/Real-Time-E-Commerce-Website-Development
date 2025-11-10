@@ -4,7 +4,7 @@
 Submit the assessment by 10th November 2025, 9:00 AM. Please share the live website link along with a brief document outlining the tools used, architecture, and data flow.
 
 ## Live Website Link
-[https://real-time-e-commerce-website-develo.vercel.app/](https://real-time-e-commerce-website-develo.vercel.app/)
+[https://real-time-e-commerce-website-develo.vercel.app/](https://real-time-e-commerce-we-git-b87868-ratan-singh-project-39c878e1.vercel.app/)
 
 ## Tools Used
 ### Frontend
